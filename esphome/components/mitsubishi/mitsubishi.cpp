@@ -71,12 +71,12 @@ void MitsubishiClimate::transmit_state() {
         data->space(bit ? MITSUBISHI_ONE_SPACE : MITSUBISHI_ZERO_SPACE);
       }
     // Footer
-    if (r == 0) {
+    // if (r == 0) {
       data->mark(MITSUBISHI_RPT_MARK);
       data->space(MITSUBISHI_RPT_SPACE);  // Pause before repeating
-    }
+    // }
   }
-  data->mark(MITSUBISHI_RPT_MARK);
+  // data->mark(MITSUBISHI_RPT_MARK);
 
   transmit.perform();
 }
