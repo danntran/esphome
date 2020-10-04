@@ -21,7 +21,7 @@ const uint16_t MITSUBISHI_BIT_MARK = 450;
 const uint16_t MITSUBISHI_ONE_SPACE = 1300;
 const uint16_t MITSUBISHI_ZERO_SPACE = 420;
 const uint16_t MITSUBISHI_RPT_MARK = 440;
-const uint16_t MITSUBISHI_RPT_SPACE = 17000;
+const uint16_t MITSUBISHI_RPT_SPACE = 17100;
 
 void MitsubishiClimate::transmit_state() {
   uint32_t remote_state[18] = {0x23, 0xCB, 0x26, 0x01, 0x00, 0x20, 0x48, 0x00, 0x30,
@@ -74,12 +74,9 @@ void MitsubishiClimate::transmit_state() {
     // Footer
     if (r == 0)
       data->item(MITSUBISHI_RPT_MARK, MITSUBISHI_RPT_SPACE);
-      // data->mark(MITSUBISHI_RPT_MARK);
-      // data->space(MITSUBISHI_RPT_SPACE);
     else
       data->mark(MITSUBISHI_RPT_MARK);
   }
-  // data->mark(MITSUBISHI_RPT_MARK);
 
   transmit.perform();
 }
