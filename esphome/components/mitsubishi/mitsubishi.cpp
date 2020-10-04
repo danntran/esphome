@@ -20,7 +20,7 @@ const uint16_t MITSUBISHI_HEADER_SPACE = 1750;
 const uint16_t MITSUBISHI_BIT_MARK = 450;
 const uint16_t MITSUBISHI_ONE_SPACE = 1300;
 const uint16_t MITSUBISHI_ZERO_SPACE = 420;
-const uint16_t MITSUBISHI_RPT_MARK = 440;
+const uint16_t MITSUBISHI_RPT_MARK = 10000/*440*/;
 const uint16_t MITSUBISHI_RPT_SPACE = 17100;
 
 void MitsubishiClimate::transmit_state() {
@@ -62,20 +62,22 @@ void MitsubishiClimate::transmit_state() {
   for (uint16_t r = 0; r < 2; r++) {
     // Header
     data->item(MITSUBISHI_HEADER_MARK, MITSUBISHI_HEADER_SPACE);
-    // data->mark(MITSUBISHI_HEADER_MARK);
-    // data->space(MITSUBISHI_HEADER_SPACE);
     // Data
     for (uint8_t i : remote_state)
       for (uint8_t j = 0; j < 8; j++) {
-        data->mark(MITSUBISHI_BIT_MARK);
         bool bit = i & (1 << j);
-        data->space(bit ? MITSUBISHI_ONE_SPACE : MITSUBISHI_ZERO_SPACE);
+        if (bit)
+          data->item(MITSUBISHI_BIT_MARK, MITSUBISHI_ONE_SPACE);
+        else
+          data->item(MITSUBISHI_BIT_MARK, MITSUBISHI_ZERO_SPACE);
       }
     // Footer
-    // if (r == 0) {
+    if (r == 0)
+      data->item(MITSUBISHI_RPT_MARK, MITSUBISHI_RPT_SPACE);
+      // data->mark(MITSUBISHI_RPT_MARK);
+      // data->space(MITSUBISHI_RPT_SPACE);
+    else
       data->mark(MITSUBISHI_RPT_MARK);
-      data->space(MITSUBISHI_RPT_SPACE);  // Pause before repeating
-    // }
   }
   // data->mark(MITSUBISHI_RPT_MARK);
 
