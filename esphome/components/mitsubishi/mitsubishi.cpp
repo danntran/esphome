@@ -15,12 +15,13 @@ const uint8_t MITSUBISHI_HEAT = 0x08;
 const uint8_t MITSUBISHI_FAN_AUTO = 0x00;
 
 // Pulse parameters in usec
-const uint16_t MITSUBISHI_BIT_MARK = 430;
-const uint16_t MITSUBISHI_ONE_SPACE = 1250;
-const uint16_t MITSUBISHI_ZERO_SPACE = 390;
-const uint16_t MITSUBISHI_HEADER_MARK = 3500;
-const uint16_t MITSUBISHI_HEADER_SPACE = 1700;
-const uint16_t MITSUBISHI_MIN_GAP = 17500;
+const uint16_t MITSUBISHI_HEADER_MARK = 3400;
+const uint16_t MITSUBISHI_HEADER_SPACE = 1750;
+const uint16_t MITSUBISHI_BIT_MARK = 450;
+const uint16_t MITSUBISHI_ONE_SPACE = 1300;
+const uint16_t MITSUBISHI_ZERO_SPACE = 420;
+const uint16_t MITSUBISHI_RPT_MARK = 440;
+const uint16_t MITSUBISHI_RPT_SPACE = 17100;
 
 void MitsubishiClimate::transmit_state() {
   uint32_t remote_state[18] = {0x23, 0xCB, 0x26, 0x01, 0x00, 0x20, 0x48, 0x00, 0x30,
@@ -71,11 +72,11 @@ void MitsubishiClimate::transmit_state() {
       }
     // Footer
     if (r == 0) {
-      data->mark(MITSUBISHI_BIT_MARK);
-      data->space(MITSUBISHI_MIN_GAP);  // Pause before repeating
+      data->mark(MITSUBISHI_RPT_MARK);
+      data->space(MITSUBISHI_RPT_SPACE);  // Pause before repeating
     }
   }
-  data->mark(MITSUBISHI_BIT_MARK);
+  data->mark(MITSUBISHI_RPT_MARK);
 
   transmit.perform();
 }
