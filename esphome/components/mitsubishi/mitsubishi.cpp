@@ -15,7 +15,7 @@ const uint8_t MITSUBISHI_HEAT = 0x08;
 const uint8_t MITSUBISHI_FAN_AUTO = 0x00;
 
 // Pulse parameters in usec
-const uint16_t MITSUBISHI_HEADER_MARK = 1700;
+const uint16_t MITSUBISHI_HEADER_MARK = 3400*2;
 const uint16_t MITSUBISHI_HEADER_SPACE = 1750;
 const uint16_t MITSUBISHI_BIT_MARK = 450;
 const uint16_t MITSUBISHI_ONE_SPACE = 1300;
@@ -61,8 +61,9 @@ void MitsubishiClimate::transmit_state() {
   // repeat twice
   for (uint16_t r = 0; r < 2; r++) {
     // Header
-    data->mark(MITSUBISHI_HEADER_MARK);
-    data->space(MITSUBISHI_HEADER_SPACE);
+    data->item(MITSUBISHI_HEADER_MARK, MITSUBISHI_HEADER_SPACE);
+    // data->mark(MITSUBISHI_HEADER_MARK);
+    // data->space(MITSUBISHI_HEADER_SPACE);
     // Data
     for (uint8_t i : remote_state)
       for (uint8_t j = 0; j < 8; j++) {
